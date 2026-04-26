@@ -1,16 +1,13 @@
 ---
 title: 某具身智能大厂面试后的碎碎念
 description: 拉完了
-slug: 某具身智能大厂面试后的碎碎念
-date: 2026-04-27 00:00:00+0000
-image:
+date: 2026-04-27
 categories:
     - 面试
 tags:
     - 导航
     - 面试
     - SLAM
-weight: 1       # You can add weight to some posts to override the default sorting (date descending)
 ---
 
 # 流程
