@@ -1,3 +1,18 @@
+---
+title: 某具身智能大厂面试后的碎碎念
+description: 拉完了
+slug: 某具身智能大厂面试后的碎碎念
+date: 2026-04-27 00:00:00+0000
+image:
+categories:
+    - 面试
+tags:
+    - 导航
+    - 面试
+    - SLAM
+weight: 1       # You can add weight to some posts to override the default sorting (date descending)
+---
+
 # 流程
 - 自我介绍
 - 在rm导航中你都做了哪些工作
