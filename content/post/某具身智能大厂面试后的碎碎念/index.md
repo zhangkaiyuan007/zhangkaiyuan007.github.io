@@ -2,12 +2,6 @@
 title: 某具身智能大厂面试后的碎碎念
 description: 拉完了
 date: 2026-04-27
-categories:
-    - 面试
-tags:
-    - 导航
-    - 面试
-    - SLAM
 ---
 
 # 流程
