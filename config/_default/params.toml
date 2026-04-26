@@ -20,7 +20,7 @@ SortBy              = "default"
 [sidebar]
     emoji    = "🍥"
     subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    avatar   = "img/sentry.png"
+    avatar   = "img/hui.jpg"
 
 [article]
     headingAnchor = false
