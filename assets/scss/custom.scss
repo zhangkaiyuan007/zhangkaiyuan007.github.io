@@ -1,3 +1,33 @@
 /*
     You can add your own custom styles here.
 */
+
+.resume-item {
+  margin-bottom: 1.2rem;
+}
+
+.resume-header,
+.resume-subheader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.resume-header {}
+
+.resume-subheader {
+  color: var(--card-text-color-secondary);
+}
+
+.award-row {
+  color: var(--card-text-color-secondary);
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.award-prize {
+  color: #d4af37;
+}
