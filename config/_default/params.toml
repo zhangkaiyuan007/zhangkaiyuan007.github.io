@@ -18,7 +18,7 @@ SortBy              = "default"
     lastUpdated = ":date_full"
 
 [sidebar]
-    emoji    = "🍥"
+    emoji    = "🤖"
     # subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     avatar   = "img/sentry.png"
 
@@ -51,7 +51,21 @@ SortBy              = "default"
 ## Comments
 [comments]
     enabled  = true
-    provider = "disqus"
+    provider = "giscus"
+
+    [comments.giscus]
+        repo = "zhangkaiyuan007/zhangkaiyuan007.github.io"
+        repoId = "R_kgDOSNMeRg"
+        category = "Announcements"
+        categoryId = "DIC_kwDOSNMeRs4C7xu1"
+        mapping = "pathname"
+        strict = "0"
+        reactionsEnabled = "1"
+        emitMetadata = "0"
+        inputPosition = "top"
+        theme = "preferred_color_scheme"
+        lang = "en"
+        loading = "lazy"
 
     # See all the available configurations at https://github.com/CaiJimmy/hugo-theme-stack/blob/master/config/_default/params.toml
     # Copy the configurations you need from there and paste it here.
