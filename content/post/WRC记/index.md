@@ -3,6 +3,7 @@ title: "WRC记"
 description: 
 date: 2026-08-24T21:35:00+08:00
 slug: "WRC记"
+image: cover.jpg
 categories:
     - 随记
 tags:
