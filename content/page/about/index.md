@@ -12,7 +12,6 @@ menu:
 I am a sophomore Computer Science student at Southwest Jiaotong University and a member of the Helios RoboMaster team. My work mainly focuses on navigation and SLAM, with a strong interest in embodied AI.
 
 ## Education
----
 <div class="resume-item">
   <div class="resume-header">
     <strong>B.Sc. · Computer Science</strong>
@@ -32,7 +31,6 @@ I am a sophomore Computer Science student at Southwest Jiaotong University and a
 </div>
 
 ## Research
----
 <div class="paper">
   <div class="paper-body">
     <div class="paper-title">Cost-Efficient Mapping of Stateful Agentic AI Workflows in AI-Tool-Enabled Networks</div>
@@ -42,7 +40,6 @@ I am a sophomore Computer Science student at Southwest Jiaotong University and a
 </div>
 
 ## Project
----
 <div class="resume-item">
   <div class="resume-header">
     <strong class="resume-title">
@@ -57,7 +54,6 @@ I am a sophomore Computer Science student at Southwest Jiaotong University and a
 </div>
 
 ## Experience
----
 <div class="resume-item">
   <div class="resume-header">
     <strong>Embodied Algorithm Ecosystem Engineer</strong>
@@ -69,8 +65,6 @@ I am a sophomore Computer Science student at Southwest Jiaotong University and a
 </div>
 
 ## Honors & Awards
----
-
 <div class="resume-item">
   <div class="award-row">
     <span>Robotac AIROBOTIC Innovation Challenge</span>
