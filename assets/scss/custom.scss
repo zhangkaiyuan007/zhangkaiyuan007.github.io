@@ -15,6 +15,12 @@
 
 .resume-header {}
 
+.resume-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .resume-subheader {
   color: var(--card-text-color-secondary);
 }
@@ -30,4 +36,46 @@
 
 .award-prize {
   color: #d4af37;
+}
+
+.paper {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.paper-body {
+  flex: 1;
+}
+
+.paper-title {
+  font-weight: 600;
+}
+
+.paper-authors {
+  opacity: 0.65;
+}
+
+.paper-desc {
+  opacity: 0.75;
+  margin: 0.1rem 0;
+}
+
+.paper-links {
+  margin-top: 0.3rem;
+}
+
+.paper-links a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.paper-links a:hover {
+  text-decoration: underline;
+}
+
+.paper-link-sep {
+  opacity: 0.4;
+  margin: 0 0.3rem;
 }
