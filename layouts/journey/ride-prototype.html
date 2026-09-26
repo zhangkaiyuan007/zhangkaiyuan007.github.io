@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+ <title>张开渊 · 旅程</title><meta name="description" content="从武汉江滩、二中与西南交大，走到 Helios 和银河通用的交互式个人作品集。"><meta name="color-scheme" content="light">
+ {{ with site.Params.favicon }}<link rel="icon" href="{{ . | relURL }}">{{ end }}
+ {{ $css := resources.Get "css/ride-prototype.css" | resources.Copy "ride/prototype.css" | minify | fingerprint }}
+ <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+</head>
+<body class="ride">
+ <main id="ride-world" tabindex="0" aria-label="第三人称骑行。W 前进，S 后退，A D 转向，靠近地点按 E 进入第一人称查看，Esc 返回。滚轮也可前进。"><canvas id="world-canvas" aria-label="按真实照片重建的武汉江滩、武汉二中、西南交大校门、Helios 与银河通用三维场景"></canvas></main>
+ <div id="letterbox" aria-hidden="true"><i></i><i></i></div>
+ <div id="title-card" aria-hidden="true"><p id="title-kicker"></p><p id="title-main"></p><p id="title-sub"></p></div>
+ <p id="skip-hint" aria-hidden="true">按任意键或轻触跳过</p>
+ <p id="location-slug" aria-hidden="true"><b></b><span></span></p>
+ <div id="drone-feed" hidden aria-hidden="true"><div class="feed-boxes"></div><span class="feed-label">机载相机 · 检测</span></div>
+ <div id="cine-fade" data-tone="paper" aria-hidden="true"></div>
+ <div id="loading" role="status" aria-label="正在加载三维场景"><span></span></div>
+ <button id="menu-toggle" class="icon-button" aria-label="打开地点与操作菜单" aria-expanded="false" aria-controls="ride-menu"><span></span><span></span></button>
+ <aside id="ride-menu" hidden aria-label="地点与操作菜单"><nav id="station-list" aria-label="选择地点"></nav><p>W / S 前后 · A / D 转向<br>滚轮前进 · E 进入 · Esc 返回</p><button id="auto-ride" aria-pressed="false">自动骑行 · 电影机位</button><button id="cine-toggle" aria-pressed="true">电影画面 · 开</button><a href="{{ "/ride/references/" | relURL }}">全部参考照片 ↗</a><a href="{{ "/about/" | relURL }}">回到 About ↗</a></aside>
+ <button id="stop-action" hidden><kbd>E</kbd><span></span></button>
+ <section id="story-panel" hidden aria-labelledby="story-title" role="dialog" aria-modal="false" tabindex="-1">
+  <button id="close-story" class="icon-button" aria-label="返回第三人称骑行">×</button>
+  <div class="story-copy"><p id="story-place"></p><h1 id="story-title"></h1><p id="story-text"></p><p id="story-detail"></p><a id="project-link" hidden></a></div>
+  <section id="demo-panel" hidden aria-label="交互演示"></section>
+  <ul id="works" hidden aria-label="这一站做过的事"></ul>
+  <div id="photo-tabs" role="tablist" aria-label="实景和物体参考"></div>
+  <figure id="reference-figure"><a id="photo-original" target="_blank" rel="noopener"><img id="reference-photo" alt="" decoding="async"></a><figcaption><strong id="photo-title"></strong><span id="photo-credit"></span></figcaption></figure>
+  <p id="model-features"></p><a id="photo-source" target="_blank" rel="noopener"></a>
+ </section>
+ <div id="touch-controls" hidden aria-label="触屏骑行控制"><button data-key="a" aria-label="按住左转">←</button><button data-key="w" aria-label="按住前进">↑</button><button data-key="s" aria-label="按住后退">↓</button><button data-key="d" aria-label="按住右转">→</button></div>
+ <div id="ride-fallback" hidden><h1>三维场景暂时无法载入</h1><a href="{{ "/about/" | relURL }}">阅读 About ↗</a></div>
+ <noscript><div class="no-script">此场景需要 JavaScript。<a href="{{ "/about/" | relURL }}">阅读 About ↗</a></div></noscript>
+ {{ $entryVersion := readFile "static/ride/ride-prototype.js" | md5 }}
+ <script type="module" src="{{ printf "/ride/ride-prototype.js?v=%s" $entryVersion | relURL }}"></script>
+</body></html>

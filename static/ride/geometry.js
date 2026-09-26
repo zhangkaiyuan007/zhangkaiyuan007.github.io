@@ -1,0 +1,34 @@
+import * as T from './vendor/three.module.min.js';
+export {T};
+export const C={white:0xfaf9f5,orange:0xe96a2d,ink:0x252c30,stone:0xd1c9b8,skin:0xe6b18d,glass:0xa7c6cd,metal:0x758087,gold:0xb89a53};
+const cache=new Map();
+export function material(color,roughness=.8,metalness=0){const k=[color,roughness,metalness].join('/');if(!cache.has(k))cache.set(k,new T.MeshStandardMaterial({color,roughness,metalness}));return cache.get(k)}
+export function mesh(g,geometry,color,x=0,y=0,z=0){const o=new T.Mesh(geometry,color?.isMaterial||Array.isArray(color)?color:material(color));o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}
+export function box(g,w,h,d,c,x=0,y=0,z=0){const geo=new T.BoxGeometry(w,h,d);if(c?.userData?.meters)meterUV(geo,w,h,d);return mesh(g,geo,c,x,y,z)}
+export function ball(g,r,c,x=0,y=0,z=0,scale=[1,1,1]){const o=mesh(g,new T.SphereGeometry(r,20,14),c,x,y,z);o.scale.set(...scale);return o}
+export function cyl(g,r,h,c,x=0,y=0,z=0,r2=r,n=20){return mesh(g,new T.CylinderGeometry(r2,r,h,n),c,x,y,z)}
+export function beam(g,a,b,r,c){const p=new T.Vector3(...a),q=new T.Vector3(...b),o=cyl(g,r,p.distanceTo(q),c);o.position.copy(p.clone().add(q).multiplyScalar(.5));o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),q.sub(p).normalize());return o}
+export function tube(g,points,r,c){return mesh(g,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),Math.max(24,points.length*5),r,7,false),c)}
+export function rounded(g,w,h,d,c,x=0,y=0,z=0,r=.1){r=Math.min(r,w/3,h/3);const s=new T.Shape(),a=-w/2,b=-h/2;s.moveTo(a+r,b);s.lineTo(a+w-r,b);s.quadraticCurveTo(a+w,b,a+w,b+r);s.lineTo(a+w,b+h-r);s.quadraticCurveTo(a+w,b+h,a+w-r,b+h);s.lineTo(a+r,b+h);s.quadraticCurveTo(a,b+h,a,b+h-r);s.lineTo(a,b+r);s.quadraticCurveTo(a,b,a+r,b);const geo=new T.ExtrudeGeometry(s,{depth:Math.max(.001,d-r),bevelEnabled:true,bevelThickness:r/2,bevelSize:r/2,bevelSegments:3,steps:1,curveSegments:8});geo.translate(0,0,-(d-r)/2);return mesh(g,geo,c,x,y,z)}
+export function sign(g,text,w,h,x,y,z,{bg='#f7f6f1',fg='#333b3f',vertical=false,font='600'}={}){const c=document.createElement('canvas');c.width=vertical?256:1536;c.height=vertical?1536:256;const a=c.getContext('2d');a.fillStyle=bg;a.fillRect(0,0,c.width,c.height);a.fillStyle=fg;a.textAlign='center';a.textBaseline='middle';if(vertical){a.font=font+' 160px serif';[...text].forEach((v,i)=>a.fillText(v,128,1536/(text.length+1)*(i+1)))}else{a.font=font+' 140px sans-serif';a.fillText(text,768,132,1480)}const texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=4;return mesh(g,new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:texture,side:T.DoubleSide}),x,y,z)}
+export const swaying=[];
+export function tree(g,x,z,size=1){const q=new T.Group();q.position.set(x,0,z);q.scale.setScalar(size);g.add(q);swaying.push(q);cyl(q,.16,3.6,0x8d806c,0,1.8,0,.08);for(let i=0;i<6;i++){const a=i*2.399;beam(q,[0,2.3,0],[Math.cos(a)*1.3,3.7+i*.13,Math.sin(a)*1.3],.045,0x8d806c);ball(q,1.1,i%2?0x92a082:0xa8b497,Math.cos(a)*.8,4+i*.14,Math.sin(a)*.8,[1,.65,.85])}}
+
+// Facade textures for distant towers: window grids with slight per-window variation, tiled via UV scale.
+const FACADES={glass:{wall:'#7f95a1',win:'#4f6573',frame:'#c3ccd0',cols:6,rows:16,gap:3,band:0,rough:.3,metal:.35},residential:{wall:'#ddd5c6',win:'#66767e',frame:'#f1ede4',cols:4,rows:12,gap:16,band:.28,rough:.85,metal:0},office:{wall:'#c9c4ba',win:'#4c5a62',frame:'#b3ada2',cols:8,rows:14,gap:6,band:.12,rough:.7,metal:.05}};
+export function facadeMaterial(kind){const k='facade'+kind;if(cache.has(k))return cache.get(k);const f=FACADES[kind],c=document.createElement('canvas');c.width=256;c.height=512;const a=c.getContext('2d');a.fillStyle=f.wall;a.fillRect(0,0,256,512);
+ const cw=256/f.cols,rh=512/f.rows;let seed=kind.length*977;for(let r=0;r<f.rows;r++){if(f.band){a.fillStyle=f.frame;a.fillRect(0,r*rh,256,rh*f.band)}for(let i=0;i<f.cols;i++){seed=(seed*16807)%2147483647;const tint=(seed%9)-4;a.fillStyle=f.win;a.fillRect(i*cw+f.gap/2,r*rh+rh*f.band+f.gap/2,cw-f.gap,rh*(1-f.band)-f.gap);a.fillStyle=tint>2?'#ffffff1c':tint<-2?'#0000001c':'#00000000';a.fillRect(i*cw+f.gap/2,r*rh+rh*f.band+f.gap/2,cw-f.gap,rh*(1-f.band)-f.gap)}}
+ const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.wrapS=t.wrapT=T.RepeatWrapping;t.anisotropy=8;const m=new T.MeshStandardMaterial({map:t,roughness:f.rough,metalness:f.metal});cache.set(k,m);return m}
+export function tower(g,w,h,d,kind,x,y,z){const f=FACADES[kind],tw=f.cols*1.6,th=f.rows*3.2,geo=new T.BoxGeometry(w,h,d),uv=geo.attributes.uv;for(let i=0;i<uv.count;i++){const face=Math.floor(i/4),top=face===2||face===3;uv.setXY(i,top?0:uv.getX(i)*(face<2?d:w)/tw,top?0:uv.getY(i)*h/th)}const o=mesh(g,geo,facadeMaterial(kind),x,y,z);o.castShadow=false;return o}
+
+// Real-world surfaces. UVs are in meters, so one photo texture set tiles consistently on every mesh that uses it;
+// dressSurfaces() attaches the maps once they load, and the flat colours below are the fallback until then.
+const SURFACES={asphalt:[0x5f615e,.92],pavers:[0xbab4a7,.86],granite:[0xaaa69d,.82],grass:[0x7b8558,.96],brick:[0xa65b43,.9],plaster:[0xe6e0d4,.9]};
+const surfaceSets=new Map();
+export function surface(name,tint){const key=name+(tint??'');if(cache.has(key))return cache.get(key);const [color,roughness]=SURFACES[name],m=new T.MeshStandardMaterial({color:tint??color,roughness});m.userData={meters:true,tinted:tint!==undefined};
+ if(!surfaceSets.has(name))surfaceSets.set(name,[]);surfaceSets.get(name).push(m);cache.set(key,m);return m}
+export function meterUV(geo,w,h,d){const uv=geo.attributes.uv,dims=[[d,h],[d,h],[w,d],[w,d],[w,h],[w,h]];for(let i=0;i<uv.count;i++){const [a,b]=dims[Math.floor(i/4)];uv.setXY(i,uv.getX(i)*a,uv.getY(i)*b)}return geo}
+export function strip(g,points,halfA,halfB,y,c,{height=0,wall=false}={}){const pos=[],uv=[],idx=[];let run=0;points.forEach(([x,z,nx,nz],i)=>{if(i)run+=Math.hypot(x-points[i-1][0],z-points[i-1][1]);if(wall)for(const h of [0,height]){pos.push(x+nx*halfA,y+h,z+nz*halfA);uv.push(h,run)}else for(const off of [halfA,halfB]){pos.push(x+nx*off,y+height,z+nz*off);uv.push(off,run)}});
+ for(let i=0;i<points.length-1;i++){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2)}const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(idx);geo.computeVertexNormals();const o=mesh(g,geo,c);o.castShadow=false;return o}
+export async function dressSurfaces(load,names){await Promise.all(Object.entries(names).map(async([name,set])=>{let src;try{src=await load(set)}catch(e){console.warn('surface',set,e);return}
+ for(const m of surfaceSets.get(name)||[]){for(const key of ['map','normalMap','roughnessMap'])if(src[key])m[key]=src[key];m.normalScale.setScalar(src.normalScale);if(m.map&&!m.userData.tinted)m.color.set(0xffffff);m.needsUpdate=true}}))}

@@ -11,6 +11,8 @@ menu:
 
 I am a sophomore Computer Science student at Southwest Jiaotong University and a member of the Helios RoboMaster team. My work mainly focuses on navigation and SLAM, with a strong interest in embodied AI.
 
+{{< journey-portal >}}
+
 ## Education
 <div class="resume-item">
   <div class="resume-header">

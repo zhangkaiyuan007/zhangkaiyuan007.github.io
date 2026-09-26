@@ -1,0 +1,3 @@
+GalaxyGeneralRobotics/galbot_one_golf_description
+Commit: 2d496b053f0d4e9e2688f59fac66022f447226be
+Apache-2.0; original visual meshes and URDF. Website applies a display pose, coordinate conversion and scaling.

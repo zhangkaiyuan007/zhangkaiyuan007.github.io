@@ -1,0 +1,103 @@
+{
+ "asphalt": {
+  "source": "clean_asphalt",
+  "url": "https://polyhaven.com/a/clean_asphalt",
+  "maps": [
+   "diff",
+   "nor",
+   "rough"
+  ],
+  "size_m": [
+   2.1,
+   2.1
+  ],
+  "authors": [
+   "Dimitrios Savva"
+  ],
+  "label": "road asphalt"
+ },
+ "paving": {
+  "source": "concrete_pavers_02",
+  "url": "https://polyhaven.com/a/concrete_pavers_02",
+  "maps": [
+   "diff",
+   "nor",
+   "rough"
+  ],
+  "size_m": [
+   2.0,
+   2.0
+  ],
+  "authors": [
+   "Amal Kumar"
+  ],
+  "label": "riverside / city concrete pavers"
+ },
+ "granite": {
+  "source": "granite_tile_03",
+  "url": "https://polyhaven.com/a/granite_tile_03",
+  "maps": [
+   "diff",
+   "nor",
+   "rough"
+  ],
+  "size_m": [
+   1.802,
+   1.802
+  ],
+  "authors": [
+   "Charlotte Baglioni"
+  ],
+  "label": "grey flamed-granite slabs for steps and quay tops"
+ },
+ "brick": {
+  "source": "red_brick",
+  "url": "https://polyhaven.com/a/red_brick",
+  "maps": [
+   "diff",
+   "nor",
+   "rough"
+  ],
+  "size_m": [
+   1.4,
+   1.4
+  ],
+  "authors": [
+   "Rob Tuytel"
+  ],
+  "label": "red brick wall"
+ },
+ "plaster": {
+  "source": "painted_plaster_wall",
+  "url": "https://polyhaven.com/a/painted_plaster_wall",
+  "maps": [
+   "diff",
+   "nor",
+   "rough"
+  ],
+  "size_m": [
+   2.0,
+   2.0
+  ],
+  "authors": [
+   "Amal Kumar"
+  ],
+  "label": "painted plaster facade"
+ },
+ "grass": {
+  "source": "ambientcg:Grass004",
+  "url": "https://ambientcg.com/view?id=Grass004",
+  "maps": [
+   "diff",
+   "nor"
+  ],
+  "size_m": [
+   1.4,
+   1.4
+  ],
+  "authors": [
+   "ambientCG (Lennart Demes)"
+  ],
+  "label": "mown lawn / grass ground"
+ }
+}
