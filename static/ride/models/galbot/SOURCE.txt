@@ -1,3 +1,4 @@
 GalaxyGeneralRobotics/galbot_one_golf_description
 Commit: 2d496b053f0d4e9e2688f59fac66022f447226be
 Apache-2.0; original visual meshes and URDF. Website applies a display pose, coordinate conversion and scaling.
+Embedded textures re-encoded as JPEG and downscaled for the web (4096/2048 px -> 1024 px; 1024 px -> 512 px on small parts) with scripts/modeling/glb_textures.py; geometry untouched.

@@ -1,9 +1,9 @@
 // Realistic ride props (Poly Haven CC0, see models/props/SOURCE.md) and PBR texture sets
 // (textures/SOURCE.md). Built by scripts/modeling/prepare_props.py + prepare_textures.py.
-import {T} from './geometry.js?v=cine4';
-import {gltf} from './gltf.js?v=cine4';
+import {T} from './geometry.js?v=cine5';
+import {gltf, fitTextures, shrink} from './gltf.js?v=cine5';
 
-const V = 'props1';
+const V = 'props2';
 const url = path => new URL(`./${path}?v=${V}`, import.meta.url).href;
 const TREES = ['street_tree_01', 'street_tree_02', 'street_tree_03'];
 const GOODS = ['goods_cardboard_box', 'goods_crate', 'goods_cans', 'goods_cleaner'];
@@ -80,7 +80,7 @@ function prepare(root, name) {
  });
  const box = new T.Box3().setFromObject(root);
  root.userData.size = box.getSize(new T.Vector3());
- return root;
+ return fitTextures(root);
 }
 
 let propsPromise = null;
@@ -154,7 +154,7 @@ const texLoader = new T.TextureLoader();
 export async function loadTextureSet(name) {
  const set = SETS[name], out = {normalScale: set.normal ?? 1};
  await Promise.all((set.maps || ['diff', 'nor', 'rough']).map(async key => {
-  const t = await texLoader.loadAsync(url(`textures/${name}/${key}.jpg`));
+  const t = shrink(await texLoader.loadAsync(url(`textures/${name}/${key}.jpg`)), 512);   // phones: 512 px
   t.wrapS = t.wrapT = T.RepeatWrapping;
   t.repeat.setScalar(1 / set.tile);
   t.anisotropy = 8;

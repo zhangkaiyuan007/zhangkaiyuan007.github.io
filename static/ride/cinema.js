@@ -1,4 +1,4 @@
-import {T} from './geometry.js?v=cine4';
+import {T} from './geometry.js?v=cine5';
 // Filmic post-processing: HDR scene target → bloom mip chain → depth-of-field gather → graded composite.
 const VERT='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
 const PREFILTER=`uniform sampler2D tMap;uniform vec2 texel;uniform float threshold,knee;varying vec2 vUv;
@@ -40,7 +40,10 @@ c+=(hash(gl_FragCoord.xy+fract(time*7.)*vec2(311.,173.))-.5)*grain*(1.-.6*l);
 gl_FragColor=vec4(c,1.);}`;
 
 export function createCinema(renderer,{low=false}={}){
- const ext=renderer.extensions,supported=renderer.capabilities.isWebGL2&&(ext.has('EXT_color_buffer_float')||ext.has('EXT_color_buffer_half_float'));
+ // Some mobile GPUs list the float-buffer extensions yet cannot render into a multisampled half-float target, which
+ // would leave every frame blank: probe one before committing to the graded pipeline.
+ const samples=Math.min(low?2:4,renderer.capabilities.maxSamples),probe=()=>{const rt=new T.WebGLRenderTarget(4,4,{type:T.HalfFloatType,samples,depthTexture:new T.DepthTexture(4,4)});renderer.setRenderTarget(rt);const gl=renderer.getContext(),ok=gl.checkFramebufferStatus(gl.FRAMEBUFFER)===gl.FRAMEBUFFER_COMPLETE;renderer.setRenderTarget(null);rt.dispose();return ok};
+ const ext=renderer.extensions,supported=renderer.capabilities.isWebGL2&&(ext.has('EXT_color_buffer_float')||ext.has('EXT_color_buffer_half_float'))&&probe();
  const size=new T.Vector2(),fsCam=new T.Camera(),fsScene=new T.Scene(),geo=new T.BufferGeometry();
  geo.setAttribute('position',new T.Float32BufferAttribute([-1,-1,0,3,-1,0,-1,3,0],3));geo.setAttribute('uv',new T.Float32BufferAttribute([0,0,2,0,0,2],2));
  const quad=new T.Mesh(geo);quad.frustumCulled=false;fsScene.add(quad);
@@ -54,7 +57,7 @@ export function createCinema(renderer,{low=false}={}){
  let sceneRT=null,dofRT=null,mips=[];
  function draw(material,target){quad.material=material;renderer.setRenderTarget(target);renderer.render(fsScene,fsCam)}
  function setSize(){if(!supported)return;renderer.getDrawingBufferSize(size);const w=size.x,h=size.y,half={type:T.HalfFloatType,depthBuffer:false};
-  if(!sceneRT){sceneRT=new T.WebGLRenderTarget(w,h,{type:T.HalfFloatType,samples:Math.min(low?2:4,renderer.capabilities.maxSamples),depthTexture:new T.DepthTexture(w,h)});dofRT=new T.WebGLRenderTarget(1,1,half);for(let i=0;i<(low?4:5);i++)mips.push(new T.WebGLRenderTarget(1,1,half))}
+  if(!sceneRT){sceneRT=new T.WebGLRenderTarget(w,h,{type:T.HalfFloatType,samples,depthTexture:new T.DepthTexture(w,h)});dofRT=new T.WebGLRenderTarget(1,1,half);for(let i=0;i<(low?4:5);i++)mips.push(new T.WebGLRenderTarget(1,1,half))}
   sceneRT.setSize(w,h);dofRT.setSize(Math.ceil(w/2),Math.ceil(h/2));mips.forEach((m,i)=>m.setSize(Math.max(1,w>>i+1),Math.max(1,h>>i+1)));
   out.uniforms.res.value.set(w,h);dof.uniforms.maxCoc.value=h*.016;
  }

@@ -1,9 +1,9 @@
-import {T,C,box,ball,cyl,beam,tube,rounded,sign,tree,swaying,material,mesh,tower,surface,strip,dressSurfaces} from './geometry.js?v=cine4';
-import {loadWestGate} from './west-gate.js?v=cine4';
-import {loadGalbot} from './galbot.js?v=cine4';
-import {stations} from './stations.js?v=cine4';
+import {T,C,box,ball,cyl,beam,tube,rounded,sign,tree,swaying,material,mesh,tower,surface,strip,dressSurfaces} from './geometry.js?v=cine5';
+import {loadWestGate} from './west-gate.js?v=cine5';
+import {loadGalbot} from './galbot.js?v=cine5';
+import {stations} from './stations.js?v=cine5';
 export {T};
-export {createAtmosphere} from './atmosphere.js?v=cine4';
+export {createAtmosphere} from './atmosphere.js?v=cine5';
 // The route's centre line and its slope dx/ds (the road runs toward -z as s grows).
 export const routeX=s=>Math.sin(s*.021)*2.4,routeDX=s=>.0504*Math.cos(s*.021);
 const masonry=()=>surface('granite'),brick=()=>surface('brick');

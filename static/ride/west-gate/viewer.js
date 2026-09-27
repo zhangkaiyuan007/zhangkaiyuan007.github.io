@@ -1,7 +1,7 @@
 import * as T from '../vendor/three.module.min.js';
 import {OrbitControls} from '../vendor/OrbitControls.js';
-import {applyGateLighting} from '../gate-lighting.js?v=cine4';
-import {loadWestGate} from '../west-gate.js?v=cine4';
+import {applyGateLighting} from '../gate-lighting.js?v=cine5';
+import {loadWestGate} from '../west-gate.js?v=cine5';
 const canvas=document.querySelector('#gate-canvas'),container=document.querySelector('#viewport');
 const renderer=new T.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.setClearColor(0xdce2df);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.outputColorSpace=T.SRGBColorSpace;
 const scene=new T.Scene();scene.fog=new T.Fog(0xdce2df,100,260);const camera=new T.PerspectiveCamera(48,1,.1,350);const controls=new OrbitControls(camera,canvas);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=4;controls.maxDistance=130;controls.maxPolarAngle=Math.PI*.53;controls.target.set(0,5,0);
@@ -14,7 +14,7 @@ function resize(){const w=container.clientWidth,h=container.clientHeight;rendere
 new ResizeObserver(resize).observe(container);resize();setView(currentView);
 for(const b of document.querySelectorAll('[data-view]'))b.onclick=()=>setView(b.dataset.view);
 document.querySelector('#photo-toggle').onclick=()=>{const hidden=document.body.classList.toggle('hide-reference');document.querySelector('#photo-toggle').setAttribute('aria-expanded',String(!hidden));resize();setView(currentView)};
-function photo(which){const n=which==='outside'?'02':'01',path='../references/xipu-west-gate/west-gate-'+n+'.jpg';document.querySelector('#photo').src=path;document.querySelector('#photo').alt=which==='outside'?'犀浦校区新西门外侧实拍':'犀浦校区新西门拱门近景';document.querySelector('#original').href=path;document.querySelector('#source').href='https://commons.wikimedia.org/wiki/File:西南交大犀浦校区新西门_20230630_'+n+'.jpg';document.querySelector('#caption').textContent=which==='outside'?'门岗、校名石与红色拱门的空间关系。':'矩形门框、白色拱腹、立柱与金色校名字形。';document.querySelector('#outside-photo').setAttribute('aria-selected',String(which==='outside'));document.querySelector('#arch-photo').setAttribute('aria-selected',String(which!=='outside'))}
+function photo(which){const n=which==='outside'?'02':'01',path='../references/xipu-west-gate/west-gate-'+n+'.jpg';document.querySelector('#photo').src='../references/display/xipu-west-gate/west-gate-'+n+'.jpg';document.querySelector('#photo').alt=which==='outside'?'犀浦校区新西门外侧实拍':'犀浦校区新西门拱门近景';document.querySelector('#original').href=path;document.querySelector('#source').href='https://commons.wikimedia.org/wiki/File:西南交大犀浦校区新西门_20230630_'+n+'.jpg';document.querySelector('#caption').textContent=which==='outside'?'门岗、校名石与红色拱门的空间关系。':'矩形门框、白色拱腹、立柱与金色校名字形。';document.querySelector('#outside-photo').setAttribute('aria-selected',String(which==='outside'));document.querySelector('#arch-photo').setAttribute('aria-selected',String(which!=='outside'))}
 document.querySelector('#outside-photo').onclick=()=>photo('outside');document.querySelector('#arch-photo').onclick=()=>photo('arch');
 loadWestGate().then(model=>{scene.add(model);applyGateLighting(model,renderer);document.querySelector('#status').hidden=true}).catch(e=>{console.error(e);document.querySelector('#status').textContent='模型暂时无法加载，请刷新重试。'});
 function frame(){requestAnimationFrame(frame);if(document.hidden)return;controls.update();camera.position.y=Math.max(.45,camera.position.y);renderer.render(scene,camera)}frame();

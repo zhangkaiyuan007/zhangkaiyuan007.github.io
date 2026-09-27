@@ -1,4 +1,4 @@
-import {T} from './geometry.js?v=cine4';
+import {T} from './geometry.js?v=cine5';
 // Warm low-sun air: graded sky dome, matching haze, sky-lit fill and drifting dust caught in the light.
 const SKY_V='varying vec3 vDir;void main(){vDir=position;vec4 p=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_Position=p.xyww;}';
 const SKY_F=`uniform vec3 horizon,zenith,sunColor,sunDir;uniform float time;varying vec3 vDir;
@@ -28,7 +28,7 @@ export function createAtmosphere(scene,renderer,{low=false}={}){
  scene.fog=new T.Fog(horizon.clone(),46,140);
  const envScene=new T.Scene();envScene.add(new T.Mesh(sky.geometry,skyMaterial));const pmrem=new T.PMREMGenerator(renderer);scene.environment=pmrem.fromScene(envScene,0,.1,400).texture;scene.environmentIntensity=.3;pmrem.dispose();
  scene.add(new T.HemisphereLight(0xdce7f0,0xa58e6e,.8));
- const sun=new T.DirectionalLight(0xffd4a2,3.7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-33,right:33,top:33,bottom:-33,near:1,far:95});sun.shadow.normalBias=.022;sun.shadow.bias=-.0001;scene.add(sun,sun.target);
+ const sun=new T.DirectionalLight(0xffd4a2,3.7);sun.castShadow=true;sun.shadow.mapSize.setScalar(low?1024:2048);Object.assign(sun.shadow.camera,{left:-33,right:33,top:33,bottom:-33,near:1,far:95});sun.shadow.normalBias=.022;sun.shadow.bias=-.0001;scene.add(sun,sun.target);
  const count=low?140:340,box=new T.Vector3(34,9,34),positions=new Float32Array(count*3),seeds=new Float32Array(count);
  for(let i=0;i<count;i++){positions.set([(Math.random()-.5)*box.x,(Math.random()-.5)*box.y,(Math.random()-.5)*box.z],i*3);seeds[i]=Math.random()}
  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.BufferAttribute(positions,3));geo.setAttribute('seed',new T.BufferAttribute(seeds,1));

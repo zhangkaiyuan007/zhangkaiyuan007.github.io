@@ -619,7 +619,7 @@ def build_lamp():
         if m.name.endswith('_bulb'):
             b.inputs['Emission Color'].default_value = (1.0, 0.82, 0.55, 1)
             b.inputs['Emission Strength'].default_value = 1.0
-    export([o], 'street_lamp', note='decimated from 30.6k tris; glass alpha 0.28 (BLEND); bulb emissive')
+    export([o], 'street_lamp', max_tex=512, note='decimated from 30.6k tris; glass alpha 0.28 (BLEND); bulb emissive')
 
 
 def build_bench():
@@ -644,7 +644,7 @@ def build_bench():
             base = bpy.data.materials.get(m.name[:-4])
             if base:
                 mats[i] = base
-    export([o], 'park_bench', rules=('armrests=512', 'supports=512', 'connectors=512'), note='assembled back bench from the modular kit; metal parts decimated ~58%')
+    export([o], 'park_bench', max_tex=512, note='assembled back bench from the modular kit; metal parts decimated ~58%')
 
 
 def build_planter(atlas):
@@ -694,7 +694,7 @@ def build_planter(atlas):
     me.normals_split_custom_set_from_vertices(nrms)
     shrub = bpy.data.objects.new('planter_shrub', me)
     bpy.context.scene.collection.objects.link(shrub)
-    export([o, soil, shrub], 'planter', rules=('leaves_atlas=512',),
+    export([o, soil, shrub], 'planter', max_tex=512,
            note='planter_box_01 scaled x1.4, decimated from 8.1k tris; added soil plane and a 90-card clipped shrub using the street_tree_03 leaf atlas')
 
 

@@ -14,15 +14,15 @@ JPEG textures (the leaf atlases are 256-colour PNGs because they need alpha; lea
 | `street_tree_01.glb` | [Tree Small 02](https://polyhaven.com/a/tree_small_02) (`tree_small_02`) | Rico Cilliers | 8,200 | 0.80 MB | 5.58 x 8.01 x 7.83 |
 | `street_tree_02.glb` | [Jacaranda Tree](https://polyhaven.com/a/jacaranda_tree) (`jacaranda_tree`) | Rob Tuytel, Rico Cilliers | 9,800 | 0.93 MB | 9.03 x 9.15 x 7.04 |
 | `street_tree_03.glb` | [Island Tree 01](https://polyhaven.com/a/island_tree_01) (`island_tree_01`) | Rob Tuytel, Rico Cilliers | 8,398 | 0.89 MB | 6.87 x 6.73 x 6.56 |
-| `street_lamp.glb` | [Street Lamp 01](https://polyhaven.com/a/street_lamp_01) (`street_lamp_01`) | Josh Dean | 4,700 | 0.38 MB | 0.70 x 3.87 x 0.39 |
-| `park_bench.glb` | [Modular Street Seating](https://polyhaven.com/a/modular_street_seating) (`modular_street_seating`) | Stuart Attenborrow | 4,879 | 0.73 MB | 2.45 x 0.87 x 0.67 |
-| `planter.glb` | [Planter Box 01](https://polyhaven.com/a/planter_box_01) (`planter_box_01`) | James Ray Cock | 3,382 | 0.75 MB | 1.28 x 0.99 x 0.77 |
+| `street_lamp.glb` | [Street Lamp 01](https://polyhaven.com/a/street_lamp_01) (`street_lamp_01`) | Josh Dean | 4,700 | 0.13 MB | 0.70 x 3.87 x 0.39 |
+| `park_bench.glb` | [Modular Street Seating](https://polyhaven.com/a/modular_street_seating) (`modular_street_seating`) | Stuart Attenborrow | 4,879 | 0.40 MB | 2.45 x 0.87 x 0.67 |
+| `planter.glb` | [Planter Box 01](https://polyhaven.com/a/planter_box_01) (`planter_box_01`) | James Ray Cock | 3,382 | 0.36 MB | 1.28 x 0.99 x 0.77 |
 | `goods_cardboard_box.glb` | [Cardboard Box 01](https://polyhaven.com/a/cardboard_box_01) (`cardboard_box_01`) | Rahul Chaudhary | 1,800 | 0.16 MB | 0.39 x 0.34 x 0.52 |
 | `goods_crate.glb` | [Plastic Crate 02](https://polyhaven.com/a/plastic_crate_02) (`plastic_crate_02`) | Fabi_G | 4,400 | 0.19 MB | 0.51 x 0.25 x 0.41 |
 | `goods_cans.glb` | [Long Life Food](https://polyhaven.com/a/long_life_food) (`long_life_food`) | Mia Pecina Zorko | 3,600 | 0.17 MB | 0.52 x 0.24 x 0.11 |
 | `goods_cleaner.glb` | [All Purpose Cleaner](https://polyhaven.com/a/all_purpose_cleaner) (`all_purpose_cleaner`) | Kuutti Siitonen | 2,400 | 0.09 MB | 0.16 x 0.32 x 0.12 |
 
-Total: 5.09 MB across 10 GLBs.
+Total: 4.11 MB across 10 GLBs.
 
 ### street_tree_01.glb
 

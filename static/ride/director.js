@@ -1,4 +1,4 @@
-import {T} from './geometry.js?v=cine4';
+import {T} from './geometry.js?v=cine5';
 // Camera direction: spring-damped chase rig, crane moves into exhibits, an opening shot, cuts, and multi-angle auto riding.
 const Y=new T.Vector3(0,1,0),UP=(y)=>new T.Vector3(0,y,0),clamp01=t=>Math.min(Math.max(t,0),1);
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,smooth=t=>t*t*(3-2*t),sine=t=>.5-.5*Math.cos(Math.PI*t);
