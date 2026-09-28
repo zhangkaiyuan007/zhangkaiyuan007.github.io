@@ -1,7 +1,7 @@
 // Realistic rider + road bike (static/ride/models/rider/rider.glb, built by scripts/modeling/build_rider.py).
 // Same {group, animate} interface as the procedural fallback in cyclist.js, but async.
-import {T} from './geometry.js?v=cine5';
-import {gltf, fitTextures} from './gltf.js?v=cine5';
+import {T} from './geometry.js?v=cine6';
+import {gltf, fitTextures} from './gltf.js?v=cine6';
 
 const MODEL = new URL('./models/rider/rider.glb?v=rider3', import.meta.url).href;
 const PHASE_TO_M = 0.382;   // distance per unit phase of the old procedural rider

@@ -1,7 +1,7 @@
 import * as T from '../vendor/three.module.min.js';
 import {OrbitControls} from '../vendor/OrbitControls.js';
-import {applyGateLighting} from '../gate-lighting.js?v=cine5';
-import {loadWestGate} from '../west-gate.js?v=cine5';
+import {applyGateLighting} from '../gate-lighting.js?v=cine6';
+import {loadWestGate} from '../west-gate.js?v=cine6';
 const canvas=document.querySelector('#gate-canvas'),container=document.querySelector('#viewport');
 const renderer=new T.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.setClearColor(0xdce2df);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.outputColorSpace=T.SRGBColorSpace;
 const scene=new T.Scene();scene.fog=new T.Fog(0xdce2df,100,260);const camera=new T.PerspectiveCamera(48,1,.1,350);const controls=new OrbitControls(camera,canvas);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=4;controls.maxDistance=130;controls.maxPolarAngle=Math.PI*.53;controls.target.set(0,5,0);

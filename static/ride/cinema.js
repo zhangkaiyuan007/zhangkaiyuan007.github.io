@@ -1,4 +1,4 @@
-import {T} from './geometry.js?v=cine5';
+import {T} from './geometry.js?v=cine6';
 // Filmic post-processing: HDR scene target → bloom mip chain → depth-of-field gather → graded composite.
 const VERT='varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
 const PREFILTER=`uniform sampler2D tMap;uniform vec2 texel;uniform float threshold,knee;varying vec2 vUv;

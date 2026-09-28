@@ -1,4 +1,4 @@
-import {T,box,cyl,material} from './geometry.js?v=cine5';
+import {T,box,cyl,material} from './geometry.js?v=cine6';
 // Zero-shot language navigation exhibit. The drone's camera "detects" objects that really exist in the west-gate
 // scene (their projected bounds stand in for YOLOE prompt-free output), DBSCAN runs for real on the remembered
 // detections, the clusters form a topological graph, and a scripted step plays the part of Qwen3-0.6B choosing a node.

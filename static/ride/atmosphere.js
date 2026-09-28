@@ -1,4 +1,4 @@
-import {T} from './geometry.js?v=cine5';
+import {T} from './geometry.js?v=cine6';
 // Warm low-sun air: graded sky dome, matching haze, sky-lit fill and drifting dust caught in the light.
 const SKY_V='varying vec3 vDir;void main(){vDir=position;vec4 p=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_Position=p.xyww;}';
 const SKY_F=`uniform vec3 horizon,zenith,sunColor,sunDir;uniform float time;varying vec3 vDir;

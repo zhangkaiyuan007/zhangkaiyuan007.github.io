@@ -1,9 +1,9 @@
-import {T,C,box,ball,cyl,beam,tube,rounded,sign,tree,swaying,material,mesh,tower,surface,strip,dressSurfaces} from './geometry.js?v=cine5';
-import {loadWestGate} from './west-gate.js?v=cine5';
-import {loadGalbot} from './galbot.js?v=cine5';
-import {stations} from './stations.js?v=cine5';
+import {T,C,box,ball,cyl,beam,tube,rounded,sign,tree,swaying,material,mesh,tower,surface,strip,dressSurfaces} from './geometry.js?v=cine6';
+import {loadWestGate} from './west-gate.js?v=cine6';
+import {loadGalbot} from './galbot.js?v=cine6';
+import {stations} from './stations.js?v=cine6';
 export {T};
-export {createAtmosphere} from './atmosphere.js?v=cine5';
+export {createAtmosphere} from './atmosphere.js?v=cine6';
 // The route's centre line and its slope dx/ds (the road runs toward -z as s grows).
 export const routeX=s=>Math.sin(s*.021)*2.4,routeDX=s=>.0504*Math.cos(s*.021);
 const masonry=()=>surface('granite'),brick=()=>surface('brick');
@@ -57,8 +57,9 @@ function school(g){const q=new T.Group();q.position.set(-17,0,-82);g.add(q);cons
 }
 function campus(g){
  const q=new T.Group();q.position.set(-29,0,-143);q.scale.setScalar(.65);g.add(q);
- const campusReady=loadWestGate().then(model=>{q.add(model);return model});
- return {stand:[-29,1.75,-102.7],look:[-29,3.45,-143.65],fit:.375,fog:[80,175],campusReady};
+ // The gate model (~7.5 MB) is far from the start, so it is fetched on request rather than with the opening assets.
+ let ready=null;const loadCampus=()=>ready??=loadWestGate().then(model=>{q.add(model);return model});
+ return {stand:[-29,1.75,-102.7],look:[-29,3.45,-143.65],fit:.375,fog:[80,175],loadCampus};
 }
 // Helios: an illustrative RoboMaster-style arena the sentry demo runs in (layout shared with demo-sentry.js).
 export const arenaLayout={width:15,depth:11,blocks:[[0,0,2.4,.35,3.2],[-3.4,-2.6,.3,.6,3],[3.4,2.6,.3,.6,3],[-2.6,3.6,1,.45,.8],[2.6,-3.6,1,.45,.8]],bases:[[-6.4,0,.55,1.1,0x2f7bff],[6.4,0,.55,1.1,0xff3b2f]]};
@@ -127,14 +128,14 @@ export function buildWorld(){const world=new T.Group();box(world,132,.2,430,surf
  const views=[{stand:[6.5,1.7,-16],look:[28,1.8,-29]},schoolView,campusView,heliosView,galbotView];
  const markers=[],ringGeo=new T.RingGeometry(.53,.58,48);for(const {at} of stations){const ring=new T.Mesh(ringGeo,new T.MeshBasicMaterial({color:C.orange,side:T.DoubleSide,transparent:true,opacity:.75})),ripple=new T.Mesh(ringGeo,new T.MeshBasicMaterial({color:C.orange,side:T.DoubleSide,transparent:true,opacity:0,depthWrite:false}));for(const r of [ring,ripple]){r.rotation.x=-Math.PI/2;r.position.set(routeX(at),.04,-at);world.add(r)}markers.push({ring,ripple})}
  let robot=null;const forest=[];
- const api={group:world,views,forest,store:galbotView.store,arena:heliosView.arena,campusReady:campusView.campusReady,loadRobot:()=>galbotView.loadRobot().then(r=>{robot=r},e=>console.error('Official Galbot model failed to load',e)),update(time,near=-1){const shader=water.material.userData.shader;if(shader)shader.uniforms.time.value=time;
+ const api={group:world,views,forest,store:galbotView.store,arena:heliosView.arena,loadCampus:campusView.loadCampus,loadRobot:()=>galbotView.loadRobot().then(r=>{robot=r},e=>console.error('Official Galbot model failed to load',e)),update(time,near=-1){const shader=water.material.userData.shader;if(shader)shader.uniforms.time.value=time;
   // Ambient life: wind in the trees, the moored boat riding the swell, a ripple under the nearest stop.
   for(const q of swaying){const p=q.position.x*.37+q.position.z*.21;q.rotation.z=Math.sin(time*.9+p)*.012+Math.sin(time*2.3+p*2)*.004;q.rotation.x=Math.sin(time*.7+p*1.3)*.008}
   boat.position.y=-.98+Math.sin(time*.6)*.04;
   for(const f of forest)f.userData.sway(time);
   // The G1 on the shop floor: head scanning the shelves, right arm reaching out and back in a slow loop.
   if(robot){const u=robot.userData,t=time*.45,reach=.5-.5*Math.cos(t);u.setJoint('head_joint1',Math.sin(t*.9)*.45);u.setJoint('head_joint2',.1+Math.sin(t*.7)*.06);u.setJoint('right_arm_joint1',u.rest('right_arm_joint1')-reach*.6);u.setJoint('right_arm_joint2',u.rest('right_arm_joint2')-reach*.35);u.setJoint('right_arm_joint4',reach*1.1)}boat.rotation.z=Math.sin(time*.45)*.012;boat.rotation.x=Math.sin(time*.37+1)*.008;
-  markers.forEach(({ring,ripple},i)=>{const on=i===near,u=(time*.55)%1;ring.material.opacity=on?.9:.55+Math.sin(time*2)*.18;ripple.visible=on;if(on){ripple.scale.setScalar(1+u*2.6);ripple.material.opacity=(1-u)*.6}})}};api.dress=props=>dressWorld(api,props);return api;
+  markers.forEach(({ring,ripple},i)=>{const on=i===near,u=(time*.55)%1;ring.material.opacity=on?.9:.55+Math.sin(time*2)*.18;ripple.visible=on;if(on){ripple.scale.setScalar(1+u*2.6);ripple.material.opacity=(1-u)*.6}})}};api.dress=props=>dressWorld(api,props);api.dressStore=props=>dressStore(api,props);return api;
 }
 
 // Swap placeholders for the realistic CC0 assets: photo surfaces, instanced street trees, lamps, benches and stock.
@@ -149,7 +150,10 @@ async function dressWorld(world,{loadProps,instanceTrees,loadTextureSet}){
   // Which side is the backrest? Average the upper vertices so the seat faces where the placeholder did (-Z).
  let back=0,n=0;props.bench.updateMatrixWorld(true);props.bench.traverse(o=>{if(!o.isMesh)return;const p=o.geometry.attributes.position;for(let i=0;i<p.count;i+=7){v.fromBufferAttribute(p,i).applyMatrix4(o.matrixWorld);if(v.y>.6){back+=v.z;n++}}});
  for(const b of placed.benches){b.clear();const c=props.bench.clone();if(n&&back/n<0)c.rotation.y=Math.PI;b.add(c)}
-  const [box,crate,cans,cleaner]=props.goods,put=(t,x,y,z,r=0)=>{const c=t.clone();c.position.set(x,y,z);c.rotation.y=r;world.store.add(c)};
+}
+// The shop's planters and stock, loaded after the first frame.
+async function dressStore(world,{loadStoreProps}){
+ const props=await loadStoreProps(),[box,crate,cans,cleaner]=props.goods,put=(t,x,y,z,r=0)=>{const c=t.clone();c.position.set(x,y,z);c.rotation.y=r;world.store.add(c)};
  {put(box,-6.9,.08,-4.2,.3);put(box,-6.95,.08+box.userData.size.y,-4.25,-.2);put(box,6.8,.08,-4.3,.1);put(crate,1.2,.08,.2,.4);put(crate,1.25,.08+crate.userData.size.y,.18,.1);put(cans,2.8,.89,-.5,.2);put(cleaner,1.6,.89,-.35);put(cleaner,1.72,.89,-.52,.6)}
  for(const [x,z] of [[-5.6,6.6],[5.6,6.6]]){const c=props.planter.clone();c.position.set(x,0,z);world.store.add(c)}
 }

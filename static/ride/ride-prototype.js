@@ -1,22 +1,29 @@
-import {applyGateLighting} from './gate-lighting.js?v=cine5';
-import {stations,photoPath,displayPath} from './stations.js?v=cine5';
+import {applyGateLighting} from './gate-lighting.js?v=cine6';
+import {stations,photoPath,displayPath} from './stations.js?v=cine6';
 const $=s=>document.querySelector(s);
 const read=k=>{try{return localStorage.getItem(k)}catch{return null}},write=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
 function fail(error){console.error(error);$('#loading').hidden=true;$('#cine-fade').hidden=true;$('#ride-fallback').hidden=false}
 // Start the big downloads (props, rider) right away, alongside the scene modules; the procedural rider is only a fallback.
-const props=import('./props.js?v=cine5').then(p=>(p.loadProps(),p));
-const rider=import('./rider.js?v=cine5').then(m=>m.loadRider()).catch(e=>{console.warn('Realistic rider unavailable',e);return import('./cyclist.js?v=cine5').then(m=>m.createCyclist())});
+const props=import('./props.js?v=cine6').then(p=>(p.loadProps(),p));
+const rider=import('./rider.js?v=cine6').then(m=>m.loadRider()).catch(e=>{console.warn('Realistic rider unavailable',e);return import('./cyclist.js?v=cine6').then(m=>m.createCyclist())});
 const PHOTO_KIND={场景参考:'场景照片',物体参考:'物体照片',结构参考:'结构图'};
-Promise.all(['./world.js?v=cine5','./cinema.js?v=cine5','./director.js?v=cine5','./demo-sentry.js?v=cine5','./demo-drone.js?v=cine5'].map(p=>import(p))).then(init).catch(fail);
+Promise.all(['./world.js?v=cine6','./cinema.js?v=cine6','./director.js?v=cine6','./demo-sentry.js?v=cine6','./demo-drone.js?v=cine6'].map(p=>import(p))).then(init).catch(fail);
 async function init([{T,buildWorld,routeX,routeDX,createAtmosphere},{createCinema},{createDirector},{createSentryDemo},{createDroneDemo}]){
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,low=matchMedia('(pointer:coarse)').matches,basePR=Math.min(devicePixelRatio,low?1.3:1.6);
  const renderer=new T.WebGLRenderer({canvas:$('#world-canvas'),antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(basePR);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.06;
  const scene=new T.Scene(),camera=new T.PerspectiveCamera(48,1,.08,220),air=createAtmosphere(scene,renderer,{low}),cinema=createCinema(renderer,{low});
  const world=buildWorld();scene.add(world.group);const demos={sentry:createSentryDemo(world.arena),drone:createDroneDemo(scene)},feed=$('#drone-feed'),feedBoxes=feed.querySelector('.feed-boxes');
- // Realistic assets replace the placeholders once loaded; if they fail, the placeholders simply stay.
+ T.DefaultLoadingManager.onProgress=(url,done,total)=>{$('#loading p').textContent=`正在载入场景 ${done} / ${total}`};
+ // Realistic street props and textures replace the placeholders once loaded; if they fail, the placeholders stay.
  const dressed=props.then(p=>world.dress(p)).catch(e=>console.warn('Realistic assets unavailable',e));
- const [campusModel,,cyclist]=await Promise.all([world.campusReady,dressed,rider]);scene.add(cyclist.group);applyGateLighting(campusModel,renderer);
  const param=new URLSearchParams(location.search).get('station'),start=stations.find(x=>x.id===param);
+ let gate=null;const loadGate=()=>gate??=world.loadCampus().then(m=>applyGateLighting(m,renderer)).catch(e=>console.error('West gate failed to load',e));
+ // The first frame waits for the street and the rider (plus the gate when starting there), but only for a few
+ // seconds after the page opened: on a slow connection the ride starts with the placeholders and the realistic
+ // models swap in on arrival.
+ let realRider=null;rider.then(r=>{realRider=r});
+ await Promise.race([Promise.all([dressed,rider,start?.id==='campus'?loadGate():null]),new Promise(r=>setTimeout(r,Math.max(1500,6000-performance.now())))]);
+ let cyclist=realRider||(await import('./cyclist.js?v=cine6')).createCyclist();scene.add(cyclist.group);
  const st={mode:'ride',s:start?start.at:11,lateral:0,speed:0,phase:0,steer:0,near:-1,active:-1,auto:false,rider:cyclist.group};
  let scrollSpeed=0,last=0,cinemaOn=cinema.supported&&read('ride-cinema')!=='off',perf=0,frames=0,scale=1;
  const keys=new Set(),visited=new Set(),body=document.body,director=createDirector({camera,routeX,views:world.views,stations,reduced});
@@ -62,7 +69,11 @@ async function init([{T,buildWorld,routeX,routeDX,createAtmosphere},{createCinem
  $('#world-canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();pause();fail(new Error('WebGL context lost'))});
  // Drop render resolution, never below 62%, when the graded pipeline cannot hold ~36 fps.
  function adapt(dt){if(!cinemaOn||!dt)return;perf+=dt;frames++;if(perf<3)return;if(perf/frames>.028&&scale>.62){scale=Math.max(.62,scale*.85);renderer.setPixelRatio(basePR*scale);resize()}perf=frames=0}
- positionRider();director.start(st,'paper');$('#loading').hidden=true;world.loadRobot();$('#ride-world').focus({preventScroll:true});updateNear();if(!param&&!reduced)startIntro();
+ if(!realRider)rider.then(r=>{r.group.visible=cyclist.group.visible;scene.remove(cyclist.group);cyclist=r;st.rider=r.group;scene.add(r.group);positionRider()});
+ // What is off screen at the start is fetched once the opening assets are in, nearest first: the gate (third stop),
+ // then the shop's G1 and stock (last stop), so they do not share the bandwidth.
+ Promise.allSettled([dressed,rider]).then(loadGate).then(()=>{world.loadRobot();props.then(p=>world.dressStore(p)).catch(e=>console.warn('Shop stock unavailable',e))});
+ positionRider();director.start(st,'paper');$('#loading').hidden=true;$('#ride-world').focus({preventScroll:true});updateNear();if(!param&&!reduced)startIntro();
  function frame(now){requestAnimationFrame(frame);if(document.hidden)return;const dt=last?Math.min((now-last)/1000,.05):0,time=now*.001;last=now;
   if(st.mode==='ride'&&menu.hidden&&!director.cutting){const input=keys.has('w')?5.8:keys.has('s')?-3.4:st.auto?4.8:scrollSpeed,steer=(keys.has('a')?1:0)-(keys.has('d')?1:0);
    st.speed=T.MathUtils.damp(st.speed,input,6,dt);st.s=T.MathUtils.clamp(st.s+st.speed*dt,0,287);st.lateral=T.MathUtils.clamp(st.lateral-steer*dt*1.6,-1.4,1.4);st.steer=T.MathUtils.damp(st.steer,steer,7,dt);scrollSpeed=T.MathUtils.damp(scrollSpeed,0,2,dt);st.phase+=st.speed*dt/.382;positionRider();updateNear();

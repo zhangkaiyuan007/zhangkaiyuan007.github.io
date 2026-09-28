@@ -1,4 +1,4 @@
-import {T,C as CYCLE,box,rounded,ball,cyl,beam,tube,material,sign} from './geometry.js?v=cine5';
+import {T,C as CYCLE,box,rounded,ball,cyl,beam,tube,material,sign} from './geometry.js?v=cine6';
 export function createCyclist(){const g=new T.Group(),C=CYCLE,wheels=[];const wheelR=.67;
  const rear=[0,.72,1.13],crank=[0,.65,.1],seat=[0,1.62,.4],head=[0,1.52,-.78],front=[0,.72,-1.13];
  // Fork, front wheel and bars turn together about the head tube.

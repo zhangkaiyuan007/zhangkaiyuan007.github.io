@@ -1,5 +1,5 @@
-import {T,box,cyl,material} from './geometry.js?v=cine5';
-import {arenaLayout} from './world.js?v=cine5';
+import {T,box,cyl,material} from './geometry.js?v=cine6';
+import {arenaLayout} from './world.js?v=cine6';
 // Sentry navigation exhibit. A browser re-creation of the stack's structure, not recorded robot data:
 // LiDAR scans build a point-cloud map, an ESDF comes from the occupancy grid, A* plans between editable
 // waypoints, pure pursuit tracks the path, and a sampling MPC stands in for NeuPAN's point-level avoidance.

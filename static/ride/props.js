@@ -1,7 +1,7 @@
 // Realistic ride props (Poly Haven CC0, see models/props/SOURCE.md) and PBR texture sets
 // (textures/SOURCE.md). Built by scripts/modeling/prepare_props.py + prepare_textures.py.
-import {T} from './geometry.js?v=cine5';
-import {gltf, fitTextures, shrink} from './gltf.js?v=cine5';
+import {T} from './geometry.js?v=cine6';
+import {gltf, fitTextures, shrink} from './gltf.js?v=cine6';
 
 const V = 'props2';
 const url = path => new URL(`./${path}?v=${V}`, import.meta.url).href;
@@ -83,21 +83,25 @@ function prepare(root, name) {
  return fitTextures(root);
 }
 
+const load = async name => prepare((await gltf.loadAsync(url(`models/props/${name}.glb`))).scene, name);
 let propsPromise = null;
-// Called once early to start the downloads and again when the world is dressed; both share one promise.
+// Street props, on screen from the start: called once early to start the downloads and again when the world is
+// dressed; both share one promise. The shop's planters and stock come later, from loadStoreProps().
 export function loadProps() {
  return propsPromise ??= (async () => {
-  const load = async name => prepare((await gltf.loadAsync(url(`models/props/${name}.glb`))).scene, name);
-  const [trees, lamp, bench, planter, goods] = await Promise.all([
-   Promise.all(TREES.map(load)), load('street_lamp'), load('park_bench'), load('planter'), Promise.all(GOODS.map(load))]);
+  const [trees, lamp, bench] = await Promise.all([Promise.all(TREES.map(load)), load('street_lamp'), load('park_bench')]);
   // Lamp glass must not hide the bulb; world.js turns the lamp arm toward the bulb.
   lamp.traverse(o => {
    if (!o.isMesh) return;
    if (/glass/i.test(o.material.name)) { o.material.transparent = true; o.material.depthWrite = false; o.castShadow = false; }
    if (/bulb/i.test(o.material.name)) lamp.userData.lightPosition = new T.Box3().setFromObject(o).getCenter(new T.Vector3());
   });
-  return {trees, lamp, bench, planter, goods};
+  return {trees, lamp, bench};
  })();
+}
+export async function loadStoreProps() {
+ const [planter, goods] = await Promise.all([load('planter'), Promise.all(GOODS.map(load))]);
+ return {planter, goods};
 }
 
 // ---------------------------------------------------------------- instancing

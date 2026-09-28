@@ -1,5 +1,5 @@
-import {T} from './geometry.js?v=cine5';
-import {gltf,fitTextures} from './gltf.js?v=cine5';
+import {T} from './geometry.js?v=cine6';
+import {gltf,fitTextures} from './gltf.js?v=cine6';
 // Assemble the vendor's real visual meshes using its URDF kinematic transforms.
 export async function loadGalbot(){
  const base=new URL('./models/galbot/',import.meta.url);const response=await fetch(new URL('urdf/galbot_one_golf.urdf?v=galbot2',base));if(!response.ok)throw new Error('G1 URDF unavailable');
