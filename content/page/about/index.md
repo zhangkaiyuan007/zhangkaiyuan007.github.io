@@ -9,9 +9,7 @@ menu:
             icon: user
 ---
 
-I am a sophomore Computer Science student at Southwest Jiaotong University and a member of the Helios RoboMaster team. My work mainly focuses on navigation and SLAM, with a strong interest in embodied AI.
-
-{{< journey-portal >}}
+I am a junior Computer Science student at Southwest Jiaotong University and a member of the Helios RoboMaster team. I am currently a research intern at HKUST(GZ), working with Prof. [Fangqiang Ding](https://toytiny.github.io/). My work mainly focuses on navigation and SLAM, with a strong interest in embodied AI.
 
 ## Education
 <div class="resume-item">
@@ -56,13 +54,16 @@ I am a sophomore Computer Science student at Southwest Jiaotong University and a
 </div>
 
 ## Experience
-<div class="resume-item">
-  <div class="resume-header">
-    <strong>Embodied Algorithm Ecosystem Engineer</strong>
-    <span class="resume-subheader">Jun. – Sep. 2026</span>
-  </div>
-  <div class="resume-subheader">
-    <span>Galbot · Shenzhen</span>
+<div class="resume-item resume-entry">
+  <img class="resume-logo" src="galbot.svg" alt="Galbot">
+  <div class="resume-entry-body">
+    <div class="resume-header">
+      <strong>Embodied Algorithm Ecosystem Engineer</strong>
+      <span class="resume-subheader">Jun. – Sep. 2026</span>
+    </div>
+    <div class="resume-subheader">
+      <span>Galbot · Shenzhen</span>
+    </div>
   </div>
 </div>
 
