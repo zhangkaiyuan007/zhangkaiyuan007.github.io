@@ -1,6 +1,7 @@
 # Markdown renderer configuration
 [goldmark.renderer]
     unsafe = true
+    hardWraps = true
 
 [goldmark.extensions.passthrough]
     enable = true
