@@ -9,7 +9,11 @@ menu:
             icon: user
 ---
 
-I am a junior Computer Science student at Southwest Jiaotong University and a member of the Helios RoboMaster team. I am currently a research intern at HKUST(GZ), working with Prof. [Fangqiang Ding](https://toytiny.github.io/). My work mainly focuses on navigation and SLAM, with a strong interest in embodied AI.
+I am a junior Computer Science student at Southwest Jiaotong University and a research intern at HKUST(GZ) working with Prof. [Fangqiang Ding](https://toytiny.github.io/). I was previously the vision group lead of the Helios RoboMaster team.
+
+I spent my first two years at university on navigation and SLAM, building them into the fully autonomous sentry robot of the Helios RoboMaster team. In summer 2026 I joined Galbot as an intern and, at the same time, started as a research intern in Prof. Ding's group, which is where I began working on robot learning.
+
+I want to work on robot learning that makes the most of human data. When people do a task, their videos, what they look at and what they say record not only the motions but also which objects matter and when. I am interested in turning that into supervision for robot policies, especially policies that actually follow the instructions they are given.
 
 ## Education
 <div class="resume-item">
@@ -18,19 +22,11 @@ I am a junior Computer Science student at Southwest Jiaotong University and a me
     <span class="resume-subheader">2024 - Present</span>
   </div>
   <div class="resume-subheader">
-    <span>Southwest Jiao Tong University</span>
-  </div>
-
-  <div class="resume-header">
-    <strong>B.Sc. · Computer Science</strong>
-    <span class="resume-subheader">2024 - Present</span>
-  </div>
-  <div class="resume-subheader">
-    <span>University of Leeds</span>
+    <span>Southwest Jiaotong University</span>
   </div>
 </div>
 
-## Research
+## Publications
 <div class="paper">
   <div class="paper-body">
     <div class="paper-title">Cost-Efficient Mapping of Stateful Agentic AI Workflows in AI-Tool-Enabled Networks</div>
@@ -49,7 +45,7 @@ I am a junior Computer Science student at Southwest Jiaotong University and a me
     <span class="resume-subheader">Jun. 2026</span>
   </div>
   <div class="resume-subheader">
-    <span>C++ implementation of NeuPAN</span>
+    <span>Optimized C++ implementation of NeuPAN with no PyTorch or cvxpy at runtime: 9 MB peak memory instead of 386 MB and about 3.5× faster planning, so it runs on an Intel NUC alongside a full robot autonomy stack</span>
   </div>
 </div>
 
